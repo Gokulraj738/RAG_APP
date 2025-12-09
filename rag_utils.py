@@ -137,8 +137,14 @@ def format_chat_history_for_llm(history_rows):
 
 def get_llm(groq_api_key: str | None):
     if not groq_api_key:
+        # Try environment secret (HuggingFace)
+        groq_api_key = os.getenv("GROQ_API_KEY")
+
+    if not groq_api_key:
         return None
+
     return ChatGroq(api_key=groq_api_key, model="llama-3.1-8b-instant", temperature=0)
+
 
 
 def transcribe_audio(video_url: str) -> str:
